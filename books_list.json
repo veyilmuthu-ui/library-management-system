@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "isbn": "9780743273565",
+    "category": "Fiction",
+    "total_copies": 5,
+    "available_copies": 4,
+    "cover_url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&q=80",
+    "added_date": "2026-07-21"
+  },
+  {
+    "id": 2,
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "isbn": "9780061120084",
+    "category": "Fiction",
+    "total_copies": 3,
+    "available_copies": 2,
+    "cover_url": "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&q=80",
+    "added_date": "2026-07-21"
+  },
+  {
+    "id": 3,
+    "title": "1984",
+    "author": "George Orwell",
+    "isbn": "9780451524935",
+    "category": "Sci-Fi",
+    "total_copies": 4,
+    "available_copies": 4,
+    "cover_url": "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&q=80",
+    "added_date": "2026-07-21"
+  },
+  {
+    "id": 4,
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "isbn": "9780132350884",
+    "category": "Technology",
+    "total_copies": 6,
+    "available_copies": 5,
+    "cover_url": "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&q=80",
+    "added_date": "2026-07-21"
+  },
+  {
+    "id": 5,
+    "title": "Design Patterns",
+    "author": "Erich Gamma et al.",
+    "isbn": "9780201633610",
+    "category": "Technology",
+    "total_copies": 2,
+    "available_copies": 2,
+    "cover_url": "https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=400&q=80",
+    "added_date": "2026-07-21"
+  },
+  {
+    "id": 6,
+    "title": "Sapiens: A Brief History of Humankind",
+    "author": "Yuval Noah Harari",
+    "isbn": "9780062316097",
+    "category": "History",
+    "total_copies": 4,
+    "available_copies": 3,
+    "cover_url": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400&q=80",
+    "added_date": "2026-07-21"
+  }
+]

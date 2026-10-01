@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESEC-AI&DS Library | Management System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container" id="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+                        <path d="m16 6 4 14H4L8 6Z" />
+                        <path d="M12 2v4" />
+                        <path d="M8 8h8" />
+                        <path d="M10 12h4" />
+                        <path d="M11 16h2" />
+                    </svg>
+                    <span>ESEC AI&DS Library</span>
+                </div>
+                <button class="mobile-close-btn" id="mobile-close-btn" aria-label="Close menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-target="dashboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="7" height="9" x="3" y="3" rx="1" />
+                        <rect width="7" height="5" x="14" y="3" rx="1" />
+                        <rect width="7" height="9" x="14" y="12" rx="1" />
+                        <rect width="7" height="5" x="3" y="16" rx="1" />
+                    </svg>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-target="books">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                        <path d="M6 6h10" />
+                        <path d="M6 10h10" />
+                        <path d="M13 14h3" />
+                    </svg>
+                    <span>Books Catalog</span>
+                </button>
+                <button class="nav-item" data-target="members" id="nav-members">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                    <span>Members Directory</span>
+                </button>
+                <button class="nav-item" data-target="transactions" id="nav-transactions">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m16 3 4 4-4 4" />
+                        <path d="M20 7H4" />
+                        <path d="m8 21-4-4 4-4" />
+                        <path d="M4 17h16" />
+                    </svg>
+                    <span>Loans & Returns</span>
+                </button>
+                <button class="nav-item admin-only" data-target="email-center" id="nav-email-center">
+                    <span aria-hidden="true">✉</span>
+                    <span>Email Center</span>
+                </button>
+
+                <button class="nav-item logout-btn" id="logout-btn" style="margin-top: auto; color: var(--danger);">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--danger);">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" x2="9" y1="12" y2="12" />
+                    </svg>
+                    <span>Sign Out</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <p class="footer-title">System Status</p>
+                <div class="status-indicator">
+                    <span class="pulse-dot"></span>
+                    <span>Local Database Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="4" x2="20" y1="12" y2="12" />
+                            <line x1="4" x2="20" y1="6" y2="6" />
+                            <line x1="4" x2="20" y1="18" y2="18" />
+                        </svg>
+                    </button>
+                    <div class="header-title-area">
+                        <h1 id="page-title">Library Dashboard</h1>
+                        <p class="current-date" id="current-date"></p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="quick-search-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.3-4.3" />
+                        </svg>
+                        <input type="text" id="global-search" placeholder="Search catalog..." class="search-input">
+                    </div>
+                    <div class="user-badge">
+                        <span class="avatar">L</span>
+                        <div class="user-info">
+                            <span class="user-name">Librarian Panel</span>
+                            <span class="user-role">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Dynamic Panels -->
+            <div class="content-body">
+
+                <!-- PANEL: Dashboard -->
+                <section class="panel active" id="dashboard-panel">
+                    <!-- Metric Cards -->
+                    <div class="metrics-grid">
+                        <div class="metric-card" id="metric-books">
+                            <div class="metric-icon bg-blue">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                                    <path d="M6 6h10" />
+                                    <path d="M6 10h10" />
+                                    <path d="M13 14h3" />
+                                </svg>
+                            </div>
+                            <div class="metric-details">
+                                <h3 id="stat-total-books">0</h3>
+                                <p>Total Books</p>
+                            </div>
+                        </div>
+                        <div class="metric-card" id="metric-members">
+                            <div class="metric-icon bg-emerald">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                </svg>
+                            </div>
+                            <div class="metric-details">
+                                <h3 id="stat-total-members">0</h3>
+                                <p>Active Members</p>
+                            </div>
+                        </div>
+                        <div class="metric-card" id="metric-loans">
+                            <div class="metric-icon bg-amber">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg>
+                            </div>
+                            <div class="metric-details">
+                                <h3 id="stat-active-loans">0</h3>
+                                <p>Books Out</p>
+                            </div>
+                        </div>
+                        <div class="metric-card overdue-card" id="metric-overdue">
+                            <div class="metric-icon bg-rose">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                                    <line x1="12" x2="12" y1="9" y2="13" />
+                                    <line x1="12" x2="12.01" y1="17" y2="17" />
+                                </svg>
+                            </div>
+                            <div class="metric-details">
+                                <h3 id="stat-overdue-loans">0</h3>
+                                <p>Overdue Items</p>
+                            </div>
+                        </div>
+                        <div class="metric-card admin-only" id="metric-emails">
+                            <div class="metric-icon bg-blue"><span aria-hidden="true">✉</span></div>
+                            <div class="metric-details">
+                                <h3 id="stat-emails-today">0</h3>
+                                <p>Emails Sent Today</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Grid -->
+                    <div class="quick-actions-bar">
+                        <button class="action-btn primary" id="quick-borrow-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m16 3 4 4-4 4" />
+                                <path d="M20 7H4" />
+                            </svg>
+                            New Book Loan
+                        </button>
+                        <button class="action-btn secondary" id="quick-add-book-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14" />
+                                <path d="M12 5v14" />
+                            </svg>
+                            Catalog Book
+                        </button>
+                        <button class="action-btn secondary" id="quick-add-member-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M19 8v6" />
+                                <path d="M16 11h6" />
+                            </svg>
+                            Register Member
+                        </button>
+                    </div>
+
+                    <!-- Two Column Dashboard Layout -->
+                    <div class="dashboard-columns">
+                        <!-- Left Side: Recent Loans -->
+                        <div class="dashboard-card main-col">
+                            <div class="card-header">
+                                <h2>Recent Borrowing Activities</h2>
+                                <button class="text-link-btn view-all-loans-nav">View All</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Book</th>
+                                            <th>Borrowed By</th>
+                                            <th>Loan Date</th>
+                                            <th>Due Date</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-transactions-tbody">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Right Side: Library Insights -->
+                        <div class="dashboard-card side-col">
+                            <div class="card-header">
+                                <h2>Genre Distribution</h2>
+                            </div>
+                            <div class="genre-chart-container">
+                                <div id="genre-legend" class="genre-legend">
+                                    <!-- Dynamic categories and counts -->
+                                </div>
+                            </div>
+                            <div class="popular-books-widget">
+                                <h4 class="widget-subtitle">Popular Releases</h4>
+                                <div id="popular-books-list" class="popular-books-list">
+                                    <!-- Dynamic books -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PANEL: Books Catalog -->
+                <section class="panel" id="books-panel">
+                    <div class="panel-header-actions">
+                        <div class="search-filter-row">
+                            <div class="search-box">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="search-icon">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" />
+                                </svg>
+                                <input type="text" id="book-search-input"
+                                    placeholder="Search by title, author, or ISBN..." class="search-input">
+                            </div>
+                            <div class="filter-dropdowns">
+                                <select id="book-genre-filter" class="form-select">
+                                    <option value="all">All Genres</option>
+                                    <!-- Dynamic genres options -->
+                                </select>
+                                <select id="book-status-filter" class="form-select">
+                                    <option value="all">All Statuses</option>
+                                    <option value="available">Available Now</option>
+                                    <option value="unavailable">All Copies Out</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-primary-action" id="add-book-trigger">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14" />
+                                <path d="M12 5v14" />
+                            </svg>
+                            Add Book
+                        </button>
+                    </div>
+
+                    <div class="books-display-grid" id="books-grid">
+                        <!-- Dynamic Book Cards -->
+                    </div>
+                </section>
+
+                <!-- PANEL: Members Directory -->
+                <section class="panel" id="members-panel">
+                    <div class="panel-header-actions">
+                        <div class="search-filter-row">
+                            <div class="search-box">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="search-icon">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" />
+                                </svg>
+                                <input type="text" id="member-search-input"
+                                    placeholder="Search by name, email, or member ID..." class="search-input">
+                            </div>
+                            <div class="filter-dropdowns">
+                                <select id="member-status-filter" class="form-select">
+                                    <option value="all">All Members</option>
+                                    <option value="active">Active Status</option>
+                                    <option value="suspended">Suspended</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-primary-action" id="add-member-trigger">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M19 8v6" />
+                                <path d="M16 11h6" />
+                            </svg>
+                            Register Member
+                        </button>
+                    </div>
+
+                    <div class="table-card">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Member Name</th>
+                                        <th>Contact Details</th>
+                                        <th>Type</th>
+                                        <th>Date Joined</th>
+                                        <th>Active Loans</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="members-tbody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PANEL: Loans & Returns -->
+                <section class="panel" id="transactions-panel">
+                    <div class="panel-header-actions">
+                        <div class="search-filter-row">
+                            <div class="search-box">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="search-icon">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" />
+                                </svg>
+                                <input type="text" id="loan-search-input"
+                                    placeholder="Search by book title or member name..." class="search-input">
+                            </div>
+                            <div class="filter-dropdowns">
+                                <select id="loan-status-filter" class="form-select">
+                                    <option value="all">All Loans</option>
+                                    <option value="active">Active (On Loan)</option>
+                                    <option value="overdue">Overdue Loans</option>
+                                    <option value="returned">Returned Items</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-primary-action" id="new-loan-trigger">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m16 3 4 4-4 4" />
+                                <path d="M20 7H4" />
+                            </svg>
+                            Issue New Loan
+                        </button>
+                    </div>
+
+                    <div class="table-card">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Book Details</th>
+                                        <th>Member Details</th>
+                                        <th>Loan Date</th>
+                                        <th>Due Date</th>
+                                        <th>Return Date</th>
+                                        <th>Fine Amount</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="loans-tbody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel" id="email-center-panel">
+                    <div class="panel-header-actions">
+                        <div>
+                            <h2>Email Center</h2>
+                            <p class="text-muted">Send secure notifications and review delivery history.</p>
+                        </div>
+                        <button class="btn-primary-action" id="email-history-refresh">Refresh History</button>
+                    </div>
+                    <div class="dashboard-columns email-layout">
+                        <div class="dashboard-card main-col">
+                            <div class="card-header"><h2>Compose Email</h2></div>
+                            <form id="email-compose-form" class="form-grid">
+                                <div class="form-group"><label for="email-recipient">Recipient email</label><input id="email-recipient" type="email" required placeholder="student@example.com"></div>
+                                <div class="form-group"><label for="email-student">Existing student</label><select id="email-student"><option value="">Manual recipient</option></select></div>
+                                <div class="form-group"><label for="email-type">Email type</label><select id="email-type"><option value="CUSTOM">Custom Email</option><option value="WELCOME">Welcome Email</option><option value="BOOK_ISSUED">Book Issued</option><option value="BOOK_RETURNED">Book Returned</option><option value="DUE_REMINDER">Due Date Reminder</option><option value="OVERDUE">Overdue Alert</option><option value="FINE">Fine Notification</option></select></div>
+                                <div class="form-group"><label for="email-subject">Subject</label><select id="email-subject" required></select></div>
+                                <div class="form-group"><label for="email-message">Message</label><textarea id="email-message" rows="8" maxlength="10000" required></textarea></div>
+                                <div class="form-actions"><button type="reset" class="btn-cancel">Clear</button><button type="submit" class="btn-submit" id="email-send-button">Send Email</button></div>
+                                <p id="email-compose-status" role="status"></p>
+                            </form>
+                        </div>
+                        <div class="dashboard-card side-col">
+                            <div class="card-header"><h2>Email History</h2></div>
+                            <div class="search-box"><input id="email-history-search" class="search-input" placeholder="Search recipient or subject"></div>
+                            <div class="table-responsive"><table class="data-table"><thead><tr><th>Recipient</th><th>Type</th><th>Status</th><th>Sent</th><th></th></tr></thead><tbody id="email-history-body"></tbody></table></div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL: Add/Edit Book -->
+    <div class="modal" id="book-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="book-modal-title">Catalog New Book</h3>
+                <button class="modal-close" id="book-modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                </button>
+            </div>
+            <form id="book-form">
+                <input type="hidden" id="book-id-input">
+                <div class="form-group">
+                    <label for="book-title-input" class="required">Book Title</label>
+                    <input type="text" id="book-title-input" required placeholder="e.g. The Pragmatic Programmer">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="book-author-input" class="required">Author</label>
+                        <input type="text" id="book-author-input" required placeholder="e.g. Andrew Hunt">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="book-isbn-input" class="required">ISBN</label>
+                        <input type="text" id="book-isbn-input" required placeholder="e.g. 978-0135957059">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="book-genre-input" class="required">Genre/Category</label>
+                        <input type="text" id="book-genre-input" required placeholder="e.g. Technology"
+                            list="genre-datalist">
+                        <datalist id="genre-datalist">
+                            <option value="Technology">
+                            <option value="Fiction">
+                            <option value="Science">
+                            <option value="History">
+                            <option value="Biography">
+                            <option value="Business">
+                        </datalist>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="book-year-input" class="required">Publish Year</label>
+                        <input type="number" id="book-year-input" required min="1000" max="2100"
+                            placeholder="e.g. 2019">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="book-copies-input" class="required">Total Copies</label>
+                        <input type="number" id="book-copies-input" required min="1" max="100" value="3">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="book-cover-color">Book Cover Accent</label>
+                        <select id="book-cover-color" class="form-select">
+                            <option value="grad-blue">Corporate Blue</option>
+                            <option value="grad-purple">Royal Purple</option>
+                            <option value="grad-emerald">Mint Emerald</option>
+                            <option value="grad-amber">Amber Sunset</option>
+                            <option value="grad-rose">Crimson Rose</option>
+                            <option value="grad-indigo">Classic Indigo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="book-cover-input" class="required">Book Cover</label>
+                    <input type="file" id="book-cover-input" accept="image/png,image/jpeg,image/webp,image/gif" required>
+                    <small>Upload a PNG, JPG, JPEG, WEBP, or GIF image up to 5MB.</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" id="book-form-cancel">Cancel</button>
+                    <button type="submit" class="btn-submit">Save Book</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Add/Edit Member -->
+    <div class="modal" id="member-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="member-modal-title">Register Member</h3>
+                <button class="modal-close" id="member-modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                </button>
+            </div>
+            <form id="member-form">
+                <input type="hidden" id="member-id-input">
+                <div class="form-group">
+                    <label for="member-name-input" class="required">Full Name</label>
+                    <input type="text" id="member-name-input" required placeholder="e.g. Jane Doe">
+                </div>
+                <div class="form-group">
+                    <label for="member-email-input" class="required">Email Address</label>
+                    <input type="email" id="member-email-input" required placeholder="e.g. jane.doe@example.com">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="member-phone-input" class="required">Phone Number</label>
+                        <input type="tel" id="member-phone-input" required placeholder="e.g. 555-0199">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="member-type-input" class="required">Membership Type</label>
+                        <select id="member-type-input" class="form-select" required>
+                            <option value="Student">Student (Max 2 books)</option>
+                            <option value="Regular" selected>Regular (Max 4 books)</option>
+                            <option value="Premium">Premium (Max 8 books)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="member-status-input">Account Status</label>
+                    <select id="member-status-input" class="form-select">
+                        <option value="Active">Active</option>
+                        <option value="Suspended">Suspended</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" id="member-form-cancel">Cancel</button>
+                    <button type="submit" class="btn-submit">Save Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Issue New Loan -->
+    <div class="modal" id="loan-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Issue Book Loan</h3>
+                <button class="modal-close" id="loan-modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                </button>
+            </div>
+            <form id="loan-form">
+                <div class="form-group search-selector-group">
+                    <label for="loan-book-search" class="required">Select Book</label>
+                    <div class="custom-autocomplete-container">
+                        <input type="text" id="loan-book-search" class="search-input" required
+                            placeholder="Type book title, author, or ISBN..." autocomplete="off">
+                        <input type="hidden" id="loan-book-id" required>
+                        <div class="autocomplete-dropdown" id="loan-book-dropdown"></div>
+                    </div>
+                    <div class="selection-feedback-badge" id="book-selection-feedback">No book selected</div>
+                </div>
+
+                <div class="form-group search-selector-group">
+                    <label for="loan-member-search" class="required">Select Member</label>
+                    <div class="custom-autocomplete-container">
+                        <input type="text" id="loan-member-search" class="search-input" required
+                            placeholder="Type member name, email, or ID..." autocomplete="off">
+                        <input type="hidden" id="loan-member-id" required>
+                        <div class="autocomplete-dropdown" id="loan-member-dropdown"></div>
+                    </div>
+                    <div class="selection-feedback-badge" id="member-selection-feedback">No member selected</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="loan-duration" class="required">Loan Duration</label>
+                    <select id="loan-duration" class="form-select">
+                        <option value="7">7 Days (Short Loan)</option>
+                        <option value="14" selected>14 Days (Standard Loan)</option>
+                        <option value="28">28 Days (Extended Loan)</option>
+                    </select>
+                </div>
+
+                <div class="loan-summary-box" id="loan-summary-box">
+                    <p class="summary-line"><strong>Due Date:</strong> <span id="summary-due-date">-</span></p>
+                    <p class="summary-line"><strong>Borrow Limit Check:</strong> <span id="summary-limit-check">Select
+                            member first</span></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" id="loan-form-cancel">Cancel</button>
+                    <button type="submit" class="btn-submit" id="loan-submit-btn" disabled>Issue Loan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Member Details & History -->
+    <div class="modal" id="member-history-modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Member Profile & Borrowing History</h3>
+                <button class="modal-close" id="member-history-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="member-profile-summary">
+                <div class="profile-avatar" id="history-profile-avatar">U</div>
+                <div class="profile-details-grid">
+                    <div>
+                        <p class="label">Name</p>
+                        <p class="value" id="history-profile-name">-</p>
+                    </div>
+                    <div>
+                        <p class="label">Email</p>
+                        <p class="value" id="history-profile-email">-</p>
+                    </div>
+                    <div>
+                        <p class="label">Phone</p>
+                        <p class="value" id="history-profile-phone">-</p>
+                    </div>
+                    <div>
+                        <p class="label">Membership</p>
+                        <p class="value"><span class="badge" id="history-profile-type">-</span></p>
+                    </div>
+                    <div>
+                        <p class="label">Status</p>
+                        <p class="value"><span class="badge" id="history-profile-status">-</span></p>
+                    </div>
+                    <div>
+                        <p class="label">Books Limit</p>
+                        <p class="value" id="history-profile-limit">-</p>
+                    </div>
+                </div>
+            </div>
+            <div class="history-table-section">
+                <h4>Loan Records</h4>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Book Title</th>
+                                <th>Borrowed</th>
+                                <th>Due Date</th>
+                                <th>Returned</th>
+                                <th>Fines</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-loans-tbody">
+                            <!-- Dynamic rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main JS Application File -->
+    <script src="student-logins.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

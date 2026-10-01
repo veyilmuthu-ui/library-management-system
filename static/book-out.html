@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Out | ESEC AI&DS LIBRARY</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="page-header">
+      <div class="page-breadcrumb">
+        <a href="index.html">Dashboard</a>
+        <span>&gt;</span>
+        <a href="index.html?panel=books">Books</a>
+        <span>&gt;</span>
+        <span>Book Out</span>
+      </div>
+      <div class="page-title-group">
+        <div>
+          <h1>Book Out</h1>
+          <p>Record a book issue for a member and track the due date quickly.</p>
+        </div>
+        <div class="page-actions">
+          <button type="button" class="btn btn-secondary" id="cancel-button">Cancel</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <form id="book-out-form" class="form-grid">
+        <section class="card card-full">
+          <div class="section-header">
+            <div>
+              <h2>Issue Details</h2>
+              <p>Capture the book, borrower, and stock information.</p>
+            </div>
+          </div>
+          <div class="section-grid">
+            <div class="field-group">
+              <label for="book-title">Book Title <span>*</span></label>
+              <input id="book-title" name="bookTitle" type="text" required />
+              <small class="field-error"></small>
+            </div>
+            <div class="field-group">
+              <label for="member-name">Member Name <span>*</span></label>
+              <input id="member-name" name="memberName" type="text" required />
+              <small class="field-error"></small>
+            </div>
+            <div class="field-group">
+              <label for="book-id">Book ID <span>*</span></label>
+              <input id="book-id" name="bookId" type="text" required />
+              <small class="field-error"></small>
+            </div>
+            <div class="field-group">
+              <label for="member-id">Member ID <span>*</span></label>
+              <input id="member-id" name="memberId" type="text" required />
+              <small class="field-error"></small>
+            </div>
+            <div class="field-group">
+              <label for="issue-date">Issue Date <span>*</span></label>
+              <input id="issue-date" name="issueDate" type="date" required />
+              <small class="field-error"></small>
+            </div>
+            <div class="field-group">
+              <label for="due-date">Due Date <span>*</span></label>
+              <input id="due-date" name="dueDate" type="date" required />
+              <small class="field-error"></small>
+            </div>
+            <div class="field-group">
+              <label for="quantity">Quantity</label>
+              <input id="quantity" name="quantity" type="number" min="1" value="1" />
+            </div>
+            <div class="field-group">
+              <label for="status">Status</label>
+              <select id="status" name="status">
+                <option value="Issued">Issued</option>
+                <option value="Pending">Pending</option>
+                <option value="Reserved">Reserved</option>
+              </select>
+            </div>
+            <div class="field-group full-width">
+              <label for="remarks">Remarks</label>
+              <textarea id="remarks" name="remarks" rows="4" placeholder="Add issuing notes or handling instructions"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="card card-full actions-card">
+          <div class="action-group">
+            <button type="button" class="btn btn-outline" id="reset-button">Reset Form</button>
+          </div>
+          <div class="action-group">
+            <button type="button" class="btn btn-secondary" id="cancel-button-bottom">Cancel</button>
+            <button type="button" class="btn btn-primary" id="save-button">Save Book Out</button>
+          </div>
+        </section>
+      </form>
+    </main>
+
+    <div class="toast hidden" id="toast-message"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('book-out-form');
+    const toastMessage = document.getElementById('toast-message');
+    const cancelButton = document.getElementById('cancel-button');
+    const cancelButtonBottom = document.getElementById('cancel-button-bottom');
+    const saveButton = document.getElementById('save-button');
+    const resetButton = document.getElementById('reset-button');
+    const issueDate = document.getElementById('issue-date');
+    const dueDate = document.getElementById('due-date');
+
+    function todayString() {
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function showToast(message) {
+      toastMessage.textContent = message;
+      toastMessage.classList.add('show');
+      toastMessage.classList.remove('hidden');
+      setTimeout(() => {
+        toastMessage.classList.remove('show');
+        setTimeout(() => {
+          toastMessage.classList.add('hidden');
+        }, 250);
+      }, 2500);
+    }
+
+    function validateForm() {
+      const requiredFields = [
+        { id: 'book-title', message: 'Book title is required.' },
+        { id: 'member-name', message: 'Member name is required.' },
+        { id: 'book-id', message: 'Book ID is required.' },
+        { id: 'member-id', message: 'Member ID is required.' },
+        { id: 'issue-date', message: 'Issue date is required.' },
+        { id: 'due-date', message: 'Due date is required.' }
+      ];
+
+      let isValid = true;
+      requiredFields.forEach(({ id, message }) => {
+        const input = document.getElementById(id);
+        const error = input.parentElement.querySelector('.field-error');
+        if (!input.value.trim()) {
+          error.textContent = message;
+          isValid = false;
+        } else {
+          error.textContent = '';
+        }
+      });
+
+      if (issueDate.value && dueDate.value && new Date(dueDate.value) < new Date(issueDate.value)) {
+        dueDate.parentElement.querySelector('.field-error').textContent = 'Due date cannot be earlier than issue date.';
+        isValid = false;
+      }
+
+      return isValid;
+    }
+
+    function saveBookOut() {
+      if (!validateForm()) return;
+
+      const existing = JSON.parse(localStorage.getItem('esec_book_out_records') || '[]');
+      const record = Object.fromEntries(new FormData(form));
+      record.quantity = Number(record.quantity || 1);
+      record.createdAt = new Date().toISOString();
+      existing.push(record);
+      localStorage.setItem('esec_book_out_records', JSON.stringify(existing));
+      showToast('Book out record saved successfully');
+      form.reset();
+      issueDate.value = todayString();
+    }
+
+    function resetForm() {
+      form.reset();
+      issueDate.value = todayString();
+      document.querySelectorAll('.field-error').forEach(item => item.textContent = '');
+    }
+
+    [cancelButton, cancelButtonBottom].forEach(button => {
+      button.addEventListener('click', () => {
+        window.location.href = 'index.html?panel=books';
+      });
+    });
+
+    saveButton.addEventListener('click', saveBookOut);
+    resetButton.addEventListener('click', resetForm);
+
+    issueDate.value = todayString();
+  </script>
+</body>
+</html>

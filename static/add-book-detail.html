@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catalog New Book | ESEC AI&DS LIBRARY</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at top, rgba(37, 99, 235, 0.12), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.16), transparent 20%),
+        linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .modal-shell {
+      width: min(1140px, 100%);
+      max-width: 1140px;
+    }
+
+    .modal-card {
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow: 0 28px 80px rgba(15, 23, 42, 0.12);
+      padding: 32px;
+      position: relative;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .modal-head h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 2.2vw, 2.4rem);
+      letter-spacing: -0.02em;
+    }
+
+    .modal-head p {
+      margin: 8px 0 0;
+      color: var(--text-muted);
+      max-width: 720px;
+    }
+
+    .modal-close {
+      border: none;
+      background: rgba(148, 163, 184, 0.12);
+      color: var(--text-secondary);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .modal-close:hover {
+      background: rgba(37, 99, 235, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .field-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .field-group label,
+    .section-header h2 {
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .upload-card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .drop-zone {
+      min-height: 190px;
+      padding: 28px;
+      border-radius: 22px;
+      border: 2px dashed rgba(148, 163, 184, 0.5);
+      background: var(--surface-alt);
+    }
+
+    .preview-panel img {
+      max-height: 340px;
+    }
+
+    @media (max-width: 930px) {
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .modal-card {
+        padding: 22px;
+      }
+
+      .modal-head {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .modal-close {
+        justify-self: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="modal-shell">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h1>Catalog New Book</h1>
+          <p>Fill in the book metadata and upload a cover image using the same elegant theme.</p>
+        </div>
+        <button type="button" class="modal-close" onclick="window.location.href='index.html?panel=books'">✕</button>
+      </div>
+
+      <form id="add-book-detail-form" class="form-grid">
+        <section class="card card-full">
+          <div class="section-header">
+            <div>
+              <h2>Topics & Identification</h2>
+              <p>Provide the main topic and key book identifiers.</p>
+            </div>
+          </div>
+          <div class="section-grid">
+            <div class="field-group full-width">
+              <label for="book-topics">Topics</label>
+              <input id="book-topics" name="topics" type="text" placeholder="e.g. software engineering, leadership" />
+            </div>
+            <div class="field-group">
+              <label for="book-id">BOOK ID</label>
+              <input id="book-id" name="bookId" type="text" placeholder="BOK-001" />
+            </div>
+            <div class="field-group">
+              <label for="isbn-number">ISBN</label>
+              <input id="isbn-number" name="isbn" type="text" placeholder="978-1234567890" />
+            </div>
+            <div class="field-group">
+              <label for="book-title">TITLE</label>
+              <input id="book-title" name="title" type="text" placeholder="Book title" />
+            </div>
+            <div class="field-group">
+              <label for="book-author">AUTHOR</label>
+              <input id="book-author" name="author" type="text" placeholder="Author name" />
+            </div>
+            <div class="field-group">
+              <label for="book-publisher">PUBLISHER</label>
+              <input id="book-publisher" name="publisher" type="text" placeholder="Publisher name" />
+            </div>
+            <div class="field-group">
+              <label for="book-edition">EDITION</label>
+              <input id="book-edition" name="edition" type="text" placeholder="e.g. 2nd" />
+            </div>
+            <div class="field-group">
+              <label for="book-publication">PUBLICATION</label>
+              <input id="book-publication" name="publication" type="text" placeholder="Publication house" />
+            </div>
+            <div class="field-group">
+              <label for="publication-year">PUBLICATION YEAR</label>
+              <input id="publication-year" name="publicationYear" type="number" min="1900" max="2100"
+                placeholder="e.g. 2024" />
+            </div>
+            <div class="field-group">
+              <label for="book-language">LANGUAGE</label>
+              <input id="book-language" name="language" type="text" placeholder="e.g. English" />
+            </div>
+            <div class="field-group">
+              <label for="book-category">CATEGORY / GENRE</label>
+              <input id="book-category" name="category" type="text" placeholder="e.g. Technology" />
+            </div>
+            <div class="field-group">
+              <label for="book-pages">NUMBER OF PAGES</label>
+              <input id="book-pages" name="pages" type="number" min="1" placeholder="e.g. 320" />
+            </div>
+          </div>
+        </section>
+
+        <section class="card card-half">
+          <div class="section-header">
+            <div>
+              <h2>Library Stock</h2>
+              <p>Inventory details for this entry.</p>
+            </div>
+          </div>
+          <div class="section-grid">
+            <div class="field-group">
+              <label for="shelf-location">SHELF LOCATION</label>
+              <input id="shelf-location" name="shelfLocation" type="text" placeholder="A3 / Row 2" />
+            </div>
+            <div class="field-group">
+              <label for="number-of-copies">NUMBER OF COPIES</label>
+              <input id="number-of-copies" name="copies" type="number" min="0" value="1" />
+            </div>
+            <div class="field-group">
+              <label for="available-copies">AVAILABLE COPIES</label>
+              <input id="available-copies" name="availableCopies" type="number" min="0" readonly />
+            </div>
+            <div class="field-group">
+              <label for="book-price">PRICE</label>
+              <input id="book-price" name="price" type="number" min="0" step="0.01" placeholder="e.g. 499.00" />
+            </div>
+          </div>
+        </section>
+
+        <section class="card card-half">
+          <div class="section-header">
+            <div>
+              <h2>Description</h2>
+              <p>Write a short summary or notes for this book.</p>
+            </div>
+          </div>
+          <div class="field-group full-width">
+            <label for="book-description">DESCRIPTION</label>
+            <textarea id="book-description" name="description" rows="8"
+              placeholder="Enter a brief description..."></textarea>
+          </div>
+        </section>
+
+        <section class="card card-half">
+          <div class="section-header">
+            <div>
+              <h2>Cover Image</h2>
+              <p>Upload a book cover image for the catalog entry.</p>
+            </div>
+          </div>
+          <div class="upload-card">
+            <div class="drop-zone" id="drop-zone">
+              <input id="cover-upload" name="coverImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif" required hidden />
+              <div class="upload-content">
+                <span class="upload-icon">📁</span>
+                <strong>Drag & drop file here</strong>
+                <p>or <button type="button" class="link-button" id="browse-button">Browse files</button></p>
+                <small>PNG, JPG or JPEG up to 5MB.</small>
+              </div>
+            </div>
+            <div class="preview-panel hidden" id="image-preview-panel">
+              <img id="image-preview" alt="Cover preview" />
+              <div class="preview-actions">
+                <span>Preview selected cover</span>
+                <button type="button" class="btn btn-secondary btn-sm" id="remove-image-button">Remove Image</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card card-full actions-card">
+          <div class="action-group">
+            <button type="button" class="btn btn-outline" id="reset-button">Reset Form</button>
+          </div>
+          <div class="action-group">
+            <button type="button" class="btn btn-secondary"
+              onclick="window.location.href='index.html?panel=books'">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Book Detail</button>
+          </div>
+        </section>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('add-book-detail-form');
+    const coverUpload = document.getElementById('cover-upload');
+    const dropZone = document.getElementById('drop-zone');
+    const browseButton = document.getElementById('browse-button');
+    const imagePreviewPanel = document.getElementById('image-preview-panel');
+    const imagePreview = document.getElementById('image-preview');
+    const removeImageButton = document.getElementById('remove-image-button');
+    const copiesInput = document.getElementById('number-of-copies');
+    const availableCopiesInput = document.getElementById('available-copies');
+
+    function updateAvailableCopies() {
+      const copies = Number(copiesInput.value);
+      availableCopiesInput.value = Number.isNaN(copies) || copies < 0 ? 0 : copies;
+    }
+
+    function handleFile(file) {
+      if (!file) return;
+      if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) {
+        alert('Please choose a PNG, JPG, JPEG, WEBP, or GIF image up to 5MB.');
+        coverUpload.value = '';
+        return;
+      }
+      const fileTransfer = new DataTransfer();
+      fileTransfer.items.add(file);
+      coverUpload.files = fileTransfer.files;
+      const reader = new FileReader();
+      reader.onload = () => {
+        imagePreview.src = reader.result;
+        imagePreviewPanel.classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    browseButton.addEventListener('click', () => coverUpload.click());
+    coverUpload.addEventListener('change', () => handleFile(coverUpload.files[0]));
+    dropZone.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (event) => {
+      event.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (event.dataTransfer.files.length) {
+        handleFile(event.dataTransfer.files[0]);
+      }
+    });
+    removeImageButton.addEventListener('click', () => {
+      imagePreview.src = '';
+      imagePreviewPanel.classList.add('hidden');
+      coverUpload.value = '';
+    });
+    copiesInput.addEventListener('input', updateAvailableCopies);
+    document.getElementById('reset-button').addEventListener('click', () => {
+      form.reset();
+      imagePreview.src = '';
+      imagePreviewPanel.classList.add('hidden');
+      updateAvailableCopies();
+    });
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      formData.set('total_copies', formData.get('copies') || '1');
+      fetch('/api/books', { method: 'POST', body: formData })
+        .then(async (response) => {
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || 'Unable to save book.');
+          alert('Book added successfully.');
+          window.location.href = 'index.html?panel=books';
+        })
+        .catch((error) => alert(error.message));
+    });
+
+    updateAvailableCopies();
+  </script>
+</body>
+
+</html>

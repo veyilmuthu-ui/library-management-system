@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESEC AI&DS Library | Portal Login</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Ensure layout handles standalone login page nicely; background comes from .login-container in styles.css */
+        body {
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-container" class="login-container" style="position: relative; top: auto; left: auto; width: auto; height: auto; background: none;">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="logo-icon"><path d="m16 6 4 14H4L8 6Z"/><path d="M12 2v4"/><path d="M8 8h8"/><path d="M10 12h4"/><path d="M11 16h2"/></svg>
+                    <span>ESEC AI&DS Library</span>
+                </div>
+                <h2>Welcome Back</h2>
+                <p>Sign in to access the ESEC AI&DS Library Portal</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="required">Login Category</label>
+                    <div class="category-selector">
+                        <button type="button" class="category-tab active" data-role="admin">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tab-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            Admin
+                        </button>
+                        <button type="button" class="category-tab" data-role="teacher">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tab-icon"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                            Faculty / Teacher
+                        </button>
+                        <button type="button" class="category-tab" data-role="student">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tab-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                            Student
+                        </button>
+                    </div>
+                    <input type="hidden" id="selected-role" value="admin">
+                </div>
+                <div class="form-group">
+                    <label for="login-username" class="required">Username</label>
+                    <div class="username-input-wrapper">
+                        <input type="text" id="login-username" required placeholder="Type username (e.g. es25ad001)..." autocomplete="off" autofocus>
+                        <span id="role-badge" class="role-badge scanning">
+                            <span class="role-badge-dot"></span>
+                            <span id="role-badge-text">Enter Username</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="login-password" class="required">Password</label>
+                    <input type="password" id="login-password" required placeholder="••••••••">
+                </div>
+                <div id="login-error" class="login-error" role="alert" aria-live="polite"></div>
+                <button type="submit" class="btn-submit login-btn">Sign In</button>
+            </form>
+            <div class="login-help">
+                <p class="help-title">Quick Logins:</p>
+                <div class="help-grid">
+                    <div class="help-item" onclick="fillCredential('admin')">
+                        <strong>Admin:</strong> <code>admin</code>
+                    </div>
+                    <div class="help-item" onclick="fillCredential('teacher_smith')">
+                        <strong>Teacher:</strong> <code>teacher_smith</code>
+                    </div>
+                    <div class="help-item" onclick="fillCredential('es25ad001')">
+                        <strong>Student:</strong> <code>es25ad001</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="student-logins.js"></script>
+    <script>
+        const seedMembers = [
+            { name: 'Sarah Jenkins', id: 'M-1001', type: 'Student' },
+            { name: 'Michael Chen', id: 'M-1002', type: 'Regular' },
+            { name: 'Elena Rostova', id: 'M-1003', type: 'Premium' },
+            { name: 'David Miller', id: 'M-1004', type: 'Suspended' }
+        ];
+
+        // Check if already logged in, redirect immediately
+        if (localStorage.getItem('esec_current_user')) {
+            window.location.href = 'index.html';
+        }
+
+        const usernameInput = document.getElementById('login-username');
+        const passwordInput = document.getElementById('login-password');
+        const loginForm = document.getElementById('login-form');
+        const loginError = document.getElementById('login-error');
+        const defaultCredentials = {
+            admin: {
+                username: 'admin',
+                password: 'password',
+                role: 'admin',
+                fullName: 'Admin Panel'
+            },
+            teacher_smith: {
+                username: 'teacher_smith',
+                password: 'password',
+                role: 'teacher',
+                fullName: 'Teacher Smith'
+            }
+        };
+
+        function getCredentialForUsername(username) {
+            const normalized = String(username || '').trim().toLowerCase();
+            const studentLogin = window.StudentLogins ? window.StudentLogins.parseUsername(normalized) : null;
+            if (studentLogin) {
+                return studentLogin;
+            }
+            return defaultCredentials[normalized] || null;
+        }
+
+        function setLoginError(message) {
+            if (!loginError) return;
+            loginError.textContent = message || '';
+            loginError.classList.toggle('visible', Boolean(message));
+        }
+
+        function fillCredential(user) {
+            if (usernameInput) {
+                usernameInput.value = user;
+                const credential = getCredentialForUsername(user);
+                passwordInput.value = credential ? credential.password : '';
+                setLoginError('');
+                
+                const role = detectRoleFromUsername(user);
+                if (role !== 'unknown') {
+                    selectCategory(role);
+                } else {
+                    updateRoleIndicator(user);
+                }
+            }
+        }
+
+        function selectCategory(role) {
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                if (tab.getAttribute('data-role') === role) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            document.getElementById('selected-role').value = role;
+            
+            const username = usernameInput ? usernameInput.value.trim() : '';
+            updateRoleIndicator(username);
+        }
+
+        // Add event listeners to category tabs
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const role = tab.getAttribute('data-role');
+                selectCategory(role);
+                
+                // Autofill default credential if input is empty
+                const username = usernameInput ? usernameInput.value.trim() : '';
+                if (!username) {
+                    if (role === 'admin') usernameInput.value = 'admin';
+                    if (role === 'teacher') usernameInput.value = 'teacher_smith';
+                    if (role === 'student') usernameInput.value = 'es25ad001';
+                    updateRoleIndicator(usernameInput.value);
+                    const credential = getCredentialForUsername(usernameInput.value);
+                    passwordInput.value = credential ? credential.password : '';
+                }
+            });
+        });
+
+        function getMembersList() {
+            try {
+                const storedMembers = localStorage.getItem('esec_members');
+                if (storedMembers) {
+                    return JSON.parse(storedMembers);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+            return seedMembers;
+        }
+
+        function detectRoleFromUsername(username) {
+            const name = username.trim().toLowerCase();
+            if (!name) return 'unknown';
+
+            if (window.StudentLogins && window.StudentLogins.parseUsername(name)) {
+                return 'student';
+            }
+            
+            if (name.includes('admin') || name.includes('librarian')) {
+                return 'admin';
+            }
+            if (name.includes('teacher') || name.includes('prof') || name.includes('faculty') || name.includes('instructor')) {
+                return 'teacher';
+            }
+            if (name.includes('student') || name.includes('stud') || name.includes('learner') || name.includes('member')) {
+                return 'student';
+            }
+            
+            // Search members directory
+            const members = getMembersList();
+            const matchedMember = members.find(m => 
+                m.name.toLowerCase().includes(name) || 
+                m.id.toLowerCase() === name || 
+                (m.email && m.email.toLowerCase().includes(name))
+            );
+            
+            if (matchedMember) {
+                return 'student';
+            }
+            
+            return 'unknown';
+        }
+
+        function updateRoleIndicator(username) {
+            const roleBadge = document.getElementById('role-badge');
+            const badgeText = document.getElementById('role-badge-text');
+            if (!roleBadge || !badgeText) return;
+            
+            if (!username.trim()) {
+                // If username is empty, match the badge to the currently selected category tab
+                const currentRole = document.getElementById('selected-role').value;
+                roleBadge.className = `role-badge ${currentRole}`;
+                switch(currentRole) {
+                    case 'admin':
+                        badgeText.textContent = 'Admin';
+                        break;
+                    case 'teacher':
+                        badgeText.textContent = 'Teacher';
+                        break;
+                    case 'student':
+                        badgeText.textContent = 'Student';
+                        break;
+                }
+                return;
+            }
+            
+            const role = detectRoleFromUsername(username);
+            const displayRole = role === 'unknown' ? document.getElementById('selected-role').value : role;
+            
+            roleBadge.className = `role-badge ${displayRole}`;
+            
+            switch(displayRole) {
+                case 'admin':
+                    badgeText.textContent = 'Admin';
+                    break;
+                case 'teacher':
+                    badgeText.textContent = 'Teacher';
+                    break;
+                case 'student':
+                    badgeText.textContent = 'Student';
+                    break;
+                default:
+                    roleBadge.className = 'role-badge scanning';
+                    badgeText.textContent = 'Scanning...';
+                    break;
+            }
+        }
+
+        // Initialize default badge
+        updateRoleIndicator('');
+
+        if (usernameInput) {
+            usernameInput.addEventListener('input', (e) => {
+                const user = e.target.value;
+                setLoginError('');
+                updateRoleIndicator(user);
+                
+                // Automatically switch selected tab if the entered username clearly dictates a role
+                const detected = detectRoleFromUsername(user);
+                if (detected !== 'unknown') {
+                    document.querySelectorAll('.category-tab').forEach(tab => {
+                        if (tab.getAttribute('data-role') === detected) {
+                            tab.classList.add('active');
+                        } else {
+                            tab.classList.remove('active');
+                        }
+                    });
+                    document.getElementById('selected-role').value = detected;
+                }
+            });
+        }
+
+        async function authenticateWithApi(username, password) {
+            const controller = window.AbortController ? new AbortController() : null;
+            const timeoutId = controller ? window.setTimeout(() => controller.abort(), 1500) : null;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                    signal: controller ? controller.signal : undefined
+                });
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    return { success: false, error: data.error || 'Invalid username or password.' };
+                }
+                return { success: true, user: data.user };
+            } catch (error) {
+                return null;
+            } finally {
+                if (timeoutId) {
+                    window.clearTimeout(timeoutId);
+                }
+            }
+        }
+
+        function authenticateLocally(username, password) {
+            const credential = getCredentialForUsername(username);
+            if (!credential || credential.password !== password) {
+                return { success: false, error: 'Invalid username or password.' };
+            }
+            return { success: true, user: credential };
+        }
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+                const submitButton = loginForm.querySelector('.login-btn');
+                setLoginError('');
+
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Signing In...';
+                }
+
+                let result = await authenticateWithApi(username, password);
+                if (result === null) {
+                    result = authenticateLocally(username, password);
+                } else if (!result.success) {
+                    const localResult = authenticateLocally(username, password);
+                    if (localResult.success) {
+                        result = localResult;
+                    }
+                }
+
+                if (!result.success) {
+                    setLoginError(result.error || 'Invalid username or password.');
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Sign In';
+                    }
+                    return;
+                }
+
+                const authenticatedUser = result.user;
+                const localCredential = getCredentialForUsername(authenticatedUser.username || username);
+                const role = authenticatedUser.role || (localCredential && localCredential.role) || document.getElementById('selected-role').value;
+                
+                // Save session in localStorage
+                const userSession = {
+                    username: authenticatedUser.username || username,
+                    role,
+                    fullName: authenticatedUser.name || authenticatedUser.fullName || (localCredential && localCredential.fullName),
+                    memberId: authenticatedUser.memberId || (localCredential && localCredential.memberId)
+                };
+                localStorage.setItem('esec_current_user', JSON.stringify(userSession));
+                
+                // Redirect to index.html
+                window.location.href = 'index.html';
+            });
+        }
+    </script>
+</body>
+</html>

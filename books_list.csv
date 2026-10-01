@@ -1,0 +1,7 @@
+id,title,author,isbn,category,total_copies,available_copies,cover_url,added_date
+1,The Great Gatsby,F. Scott Fitzgerald,9780743273565,Fiction,5,4,https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&q=80,2026-07-21
+2,To Kill a Mockingbird,Harper Lee,9780061120084,Fiction,3,2,https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&q=80,2026-07-21
+3,1984,George Orwell,9780451524935,Sci-Fi,4,4,https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&q=80,2026-07-21
+4,Clean Code,Robert C. Martin,9780132350884,Technology,6,5,https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&q=80,2026-07-21
+5,Design Patterns,Erich Gamma et al.,9780201633610,Technology,2,2,https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=400&q=80,2026-07-21
+6,Sapiens: A Brief History of Humankind,Yuval Noah Harari,9780062316097,History,4,3,https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400&q=80,2026-07-21

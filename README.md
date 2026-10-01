@@ -1,5 +1,9 @@
 # 📚 ESEC AI&DS Library Management System
 
+## 🌐 Live Demo
+
+🚧 **Coming soon — deployment in progress**
+
 A modern Library Management System designed for the ESEC AI&DS department to simplify and digitize common library operations.
 
 The system provides separate access for Admin, Faculty/Teacher, and Student users and includes modules for managing books, members, loans, returns, and email notifications.
